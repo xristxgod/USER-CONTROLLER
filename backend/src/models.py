@@ -14,3 +14,8 @@ class UserModel(Model):
     country = fields.CharField(max_length=50)
     date_modified = fields.DatetimeField(default=datetime.now())
     date_created = fields.DatetimeField(default=datetime.now())
+
+
+__all__ = [
+    "UserModel"
+]

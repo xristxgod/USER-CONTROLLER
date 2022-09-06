@@ -8,7 +8,7 @@ class BodySaveUser(BaseModel):
     name: constr(max_length=50) = Field(description="Имя пользователя")
     surname: constr(max_length=50) = Field(description="Фамилия пользователя")
     patronymic: Optional[constr(max_length=50)] = Field(description="Отчество пользователя")
-    phoneNumber: constr(min_length=11, max_length=11) = Field(description="Телефонный номер", alias="phone_number")
+    phone_number: constr(min_length=11, max_length=11) = Field(description="Телефонный номер")
     email: Optional[EmailStr] = Field(description="Email")
     country: constr(max_length=50) = Field(description="Старана")
 
@@ -90,3 +90,9 @@ class ResponseSuccessfully(BaseModel):
                 "successfully": True
             }
         }
+
+
+__all__ = [
+    "BodySaveUser", "BodyNumber",
+    "ResponseGetUser", "ResponseSuccessfully"
+]
