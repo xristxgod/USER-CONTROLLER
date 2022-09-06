@@ -58,7 +58,7 @@ class BodyNumber(BaseModel):
         }
 
 
-class ResponseGetUser(BaseModel):
+class ResponseUser(BaseModel):
     name: constr(max_length=50) = Field(description="Имя пользователя")
     surname: constr(max_length=50) = Field(description="Фамилия пользователя")
     patronymic: Optional[constr(max_length=50)] = Field(description="Отчество пользователя", default=None)
@@ -94,5 +94,5 @@ class ResponseSuccessfully(BaseModel):
 
 __all__ = [
     "BodyUser", "BodyNumber",
-    "ResponseGetUser", "ResponseSuccessfully"
+    "ResponseUser", "ResponseSuccessfully"
 ]

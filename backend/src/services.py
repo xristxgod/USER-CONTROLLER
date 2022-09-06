@@ -4,7 +4,7 @@ from datetime import datetime
 from tortoise.exceptions import IncompleteInstanceError
 
 from .models import UserModel
-from .schemas import BodyUser, ResponseGetUser, ResponseSuccessfully
+from .schemas import BodyUser, ResponseUser, ResponseSuccessfully
 from config import logger
 
 
@@ -23,7 +23,7 @@ class ServiceUserCRUD:
         return ResponseSuccessfully(successfully=status)
 
     @staticmethod
-    async def get(phone_number: str) -> Optional[ResponseGetUser]:
+    async def get(phone_number: str) -> Optional[ResponseUser]:
         return await UserModel.filter(phone_number=phone_number).first()
 
     @staticmethod
