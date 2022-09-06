@@ -4,7 +4,7 @@ from typing import Optional
 from pydantic import BaseModel, Field, EmailStr, constr, validator
 
 
-class BodySaveUser(BaseModel):
+class BodyUser(BaseModel):
     name: constr(max_length=50) = Field(description="Имя пользователя")
     surname: constr(max_length=50) = Field(description="Фамилия пользователя")
     patronymic: Optional[constr(max_length=50)] = Field(description="Отчество пользователя")
@@ -20,7 +20,7 @@ class BodySaveUser(BaseModel):
             raise ValueError("Only Cyrillic is allowed for the string!")
         return value
 
-    @validator("phoneNumber")
+    @validator("phone_number")
     def valid_phone_number(cls, number: str):
         if not number.isdigit():
             raise ValueError("The number must consist of integers. Example: 79281304521")
@@ -93,6 +93,6 @@ class ResponseSuccessfully(BaseModel):
 
 
 __all__ = [
-    "BodySaveUser", "BodyNumber",
+    "BodyUser", "BodyNumber",
     "ResponseGetUser", "ResponseSuccessfully"
 ]
