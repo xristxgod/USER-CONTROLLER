@@ -15,6 +15,12 @@ class UserModel(Model):
     date_modified = fields.DatetimeField(default=datetime.now())
     date_created = fields.DatetimeField(default=datetime.now())
 
+    class Meta:
+        table = "user_model"
+
+    def __str__(self):
+        return f"{self.surname} {self.name}"
+
 
 __all__ = [
     "UserModel"
