@@ -64,10 +64,10 @@ class ResponseUser(BaseModel):
     name: constr(max_length=50) = Field(description="Имя пользователя")
     surname: constr(max_length=50) = Field(description="Фамилия пользователя")
     patronymic: Optional[constr(max_length=50)] = Field(description="Отчество пользователя", default=None)
-    phoneNumber: constr(min_length=11, max_length=11) = Field(description="Телефонный номер", alias="phone_number")
+    phone_number: constr(min_length=11, max_length=11) = Field(description="Телефонный номер")
     email: Optional[EmailStr] = Field(description="Email", default=None)
     country: constr(max_length=50) = Field(description="Старана")
-    countryCode: int = Field(description="Код страны", alias="country_code", default=None)
+    country_code: int = Field(description="Код страны")
 
     class Config:
         schema_extra = {

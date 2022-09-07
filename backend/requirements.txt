@@ -3,3 +3,4 @@ pydantic[email]
 tortoise-orm[asyncpg]
 uvicorn
 aerich
+aiohttp

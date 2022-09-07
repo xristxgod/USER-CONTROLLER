@@ -1,11 +1,36 @@
-from typing import Optional
+from typing import Optional, Dict
 from datetime import datetime
 
+import aiohttp
 from tortoise.exceptions import IncompleteInstanceError
 
 from .models import UserModel
 from .schemas import BodyUser, ResponseUser, ResponseSuccessfully
-from config import logger
+from config import Config, logger
+
+
+class ExternalDaData:
+    URL = "https://suggestions.dadata.ru/suggestions/api/4_1/rs/suggest/country"
+
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(ExternalDaData, cls).__new__(cls)
+        return cls.instance
+
+    def __init__(self):
+        self.session = aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA})
+        self.cache = {}
+
+    async def get(self, country: str) -> int:
+        if country not in self.cache:
+            async with aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA}) as session:
+                async with session.post(self.URL, json={"query": country}) as response:
+                    data: Dict = await response.json()
+            if len(data["suggestions"]) == 0:
+                return 0
+            code = int(data["suggestions"][0]["data"]["code"])
+            self.cache[country] = code
+        return self.cache[country]
 
 
 class ServiceUserCRUD:
@@ -23,7 +48,7 @@ class ServiceUserCRUD:
         return ResponseSuccessfully(successfully=status)
 
     @staticmethod
-    async def get(phone_number: str) -> Optional[ResponseUser]:
+    async def get(phone_number: str) -> Optional[UserModel]:
         return await UserModel.filter(phone_number=phone_number).first()
 
     @staticmethod
@@ -52,6 +77,9 @@ class ServiceUserCRUD:
         return ResponseSuccessfully(successfully=status)
 
 
+external = ExternalDaData()
+
+
 __all__ = [
-    "ServiceUserCRUD"
+    "ServiceUserCRUD", "external"
 ]

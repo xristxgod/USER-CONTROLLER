@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, status
 
 from .schemas import BodyUser, BodyNumber, ResponseSuccessfully, ResponseUser
-from .services import ServiceUserCRUD
+from .services import ServiceUserCRUD, external
 
 
 router = APIRouter(
@@ -25,7 +25,15 @@ async def get_user(body: BodyNumber):
     result = await ServiceUserCRUD.get(phone_number=body.phoneNumber)
     if result is None:
         raise HTTPException(detail="User with given phone number not found!", status_code=status.HTTP_404_NOT_FOUND)
-    return result
+    return ResponseUser(
+        name=result.name,
+        surname=result.surname,
+        patronymic=result.patronymic,
+        phone_number=result.phone_number,
+        email=result.email,
+        country=result.country,
+        country_code=await external.get(result.country)
+    )
 
 
 @router.post(
