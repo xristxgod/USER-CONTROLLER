@@ -1,0 +1,81 @@
+version: '3'
+
+
+services:
+  database:
+    container_name: database
+    image: postgres:13.3
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: user_database
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    networks:
+      - prod_network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U root -d user_database" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    restart: always
+    volumes:
+      - ./config/db:/var/lib/postgresql/data
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+  cache:
+    image: mongo:latest
+    container_name: cache
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    expose:
+      - 27017
+    volumes:
+      - ./config/db:/data/db
+    networks:
+      - prod_network
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+  backend:
+    restart: always
+    build:
+      context: backend/
+      dockerfile: Dockerfile
+    container_name: backend
+    command: uvicorn main:app --host 0.0.0.0 --port 5000
+    env_file:
+      - ./.prod.env
+    expose:
+      - 5000
+    networks:
+      - prod_network
+    depends_on:
+      - cache
+      - database
+    logging:
+      options:
+        max-size: 10m
+  nginx_server:
+    build:
+      context: nginx/
+      dockerfile: Dockerfile
+    container_name: nginx_server
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - prod_network
+
+networks:
+  prod_network:
+    driver: bridge
