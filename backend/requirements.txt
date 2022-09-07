@@ -5,3 +5,4 @@ uvicorn
 aerich
 aiohttp
 pymongo
+motor==2.5.1
