@@ -5,6 +5,7 @@ from typing import Optional, Dict
 from src.models import StorageDB
 from src.services import ServiceUserCRUD, external
 
+
 TEST_DATA = {
     "value": "Россия",
     "unrestricted_value": "Российская Федерация",
