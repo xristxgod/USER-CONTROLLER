@@ -11,14 +11,17 @@ from config import logger
 class ServiceUserCRUD:
     @staticmethod
     async def create(body: BodyUser) -> ResponseSuccessfully:
-        if UserModel.filter(phone_number=body.phone_number).exists():
+        if await UserModel.filter(phone_number=body.phone_number).exists():
             return await ServiceUserCRUD.update(body.phone_number, body=body)
         try:
             user = UserModel(**body.dict())
             await user.save()
             status = True
-        except IncompleteInstanceError as ex:
-            logger.error(f"{ex}")
+        except IncompleteInstanceError as e:
+            logger.error(f"{e}")
+            status = False
+        except Exception as e:
+            logger.error(f"{e}")
             status = False
         return ResponseSuccessfully(successfully=status)
 

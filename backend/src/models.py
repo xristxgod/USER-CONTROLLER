@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime
 
 from tortoise import fields
@@ -5,7 +6,7 @@ from tortoise.models import Model
 
 
 class UserModel(Model):
-    user_id = fields.CharField(max_length=12, pk=True, unique=True)
+    user_id = fields.CharField(max_length=12, pk=True, unique=True, default=uuid.uuid1().hex[:12])
     name = fields.CharField(max_length=50)
     surname = fields.CharField(max_length=50)
     patronymic = fields.CharField(max_length=50, default=None, null=True)
