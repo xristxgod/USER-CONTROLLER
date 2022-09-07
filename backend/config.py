@@ -18,5 +18,3 @@ class Config:
     ]
 
     CACHE_DATABASE_URI = os.getenv("CACHE_DATABASE_URI", "mongodb://docker:mongopw@localhost:49154")
-    CACHE_DATABASE_NAME = os.getenv("CACHE_DATABASE_NAME", "dev_cache")
-    CACHE_DATABASE_COLLECTION = os.getenv("CACHE_DATABASE_COLLECTION", "dev_collection")
