@@ -4,8 +4,8 @@ from datetime import datetime
 import aiohttp
 from tortoise.exceptions import IncompleteInstanceError
 
-from .models import UserModel, StorageDB
-from .schemas import BodyUser, ResponseUser, ResponseSuccessfully
+from .models import UserModel, storage
+from .schemas import BodyUser, ResponseSuccessfully
 from config import Config, logger
 
 
@@ -18,17 +18,19 @@ class ExternalDaData:
         return cls.instance
 
     def __init__(self):
-        self.cache = StorageDB()
+        self.cache = storage
 
     async def get_code(self, country: str) -> int:
-        if country not in self.cache:
+        result: Optional[Dict] = await self.cache.get(country)
+        if result is None:
             async with aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA}) as session:
                 async with session.post(self.URL, json={"query": country}) as response:
                     data: Dict = await response.json()
             if len(data["suggestions"]) == 0:
                 return 0
-            self.cache[country] = data["suggestions"][0]
-        return self.cache[country]["data"]["code"]
+            await self.cache.insert(country=country, data=data["suggestions"][0]["data"])
+            result = await self.cache.get(country)
+        return result.get("code")
 
 
 class ServiceUserCRUD:

@@ -18,7 +18,7 @@ class BodyUser(BaseModel):
             return None
         if not bool(re.fullmatch(r'(?i)[а-яё ]+', value)):
             raise ValueError("Only Cyrillic is allowed for the string!")
-        return value
+        return value.title()
 
     @validator("phone_number")
     def valid_phone_number(cls, number: str):

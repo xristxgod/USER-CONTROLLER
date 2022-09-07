@@ -1,5 +1,5 @@
 import uuid
-from typing import Dict, Optional
+from typing import Optional, Dict
 from datetime import datetime
 
 import pymongo
@@ -34,23 +34,24 @@ class StorageDB:
         return cls.instance
 
     def __init__(self):
-        self.__client = pymongo.MongoClient(Config.CACHE_DATABASE_URI)
-        self.__db = self.__client.get_database(Config.CACHE_DATABASE_NAME)
-        self.__collection = self.__db.get_collection(Config.CACHE_DATABASE_COLLECTION)
+        self.client = pymongo.MongoClient(Config.CACHE_DATABASE_URI)
+        self.db = self.client.get_database(Config.CACHE_DATABASE_NAME)
+        self.collection = self.db.get_collection(Config.CACHE_DATABASE_COLLECTION)
 
-    @property
-    def collection(self):
-        return self.__collection
+    async def get(self, country: str) -> Optional[Dict]:
+        result = self.collection.find_one({"country": country})
+        if result is not None:
+            return result["data"]
 
-    def __setitem__(self, key: str, data: Dict):
-        self.collection.insert_one({"country": key, "data": data})
+    async def insert(self, country: str, data: Dict) -> Optional:
+        self.collection.insert_one({"country": country, "data": data})
 
-    def __getitem__(self, key: str) -> Optional[Dict]:
-        return self.collection.find({}, {"country": key})[0]
+
+storage = StorageDB()
 
 
 __all__ = [
-    "UserModel", "StorageDB"
+    "UserModel", "storage"
 ]
 
 
