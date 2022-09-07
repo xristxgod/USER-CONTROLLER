@@ -51,7 +51,7 @@ storage = StorageDB()
 
 
 __all__ = [
-    "UserModel", "storage"
+    "UserModel", "StorageDB", "storage"
 ]
 
 

@@ -20,12 +20,15 @@ class ExternalDaData:
     def __init__(self):
         self.cache = storage
 
+    async def __external(self, country: str) -> Dict:
+        async with aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA}) as session:
+            async with session.post(self.URL, json={"query": country}) as response:
+                return await response.json()
+
     async def get_code(self, country: str) -> int:
         result: Optional[Dict] = await self.cache.get(country)
         if result is None:
-            async with aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA}) as session:
-                async with session.post(self.URL, json={"query": country}) as response:
-                    data: Dict = await response.json()
+            data = await self.__external(country)
             if len(data["suggestions"]) == 0:
                 return 0
             await self.cache.insert(country=country, data=data["suggestions"][0]["data"])
@@ -81,5 +84,5 @@ external = ExternalDaData()
 
 
 __all__ = [
-    "ServiceUserCRUD", "external"
+    "ServiceUserCRUD", "ExternalDaData", "external"
 ]
