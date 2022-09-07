@@ -67,7 +67,7 @@ class ResponseUser(BaseModel):
     phoneNumber: constr(min_length=11, max_length=11) = Field(description="Телефонный номер", alias="phone_number")
     email: Optional[EmailStr] = Field(description="Email", default=None)
     country: constr(max_length=50) = Field(description="Старана")
-    countryCode: int = Field(description="Код страны", alias="country_code")
+    countryCode: int = Field(description="Код страны", alias="country_code", default=None)
 
     class Config:
         schema_extra = {

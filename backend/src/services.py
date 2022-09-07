@@ -20,9 +20,6 @@ class ServiceUserCRUD:
         except IncompleteInstanceError as e:
             logger.error(f"{e}")
             status = False
-        except Exception as e:
-            logger.error(f"{e}")
-            status = False
         return ResponseSuccessfully(successfully=status)
 
     @staticmethod
@@ -44,7 +41,7 @@ class ServiceUserCRUD:
 
     @staticmethod
     async def delete(phone_number: str) -> Optional[ResponseSuccessfully]:
-        if UserModel.filter(phone_number=phone_number).exists():
+        if not await UserModel.filter(phone_number=phone_number).exists():
             return None
         try:
             await UserModel.filter(phone_number=phone_number).delete()
