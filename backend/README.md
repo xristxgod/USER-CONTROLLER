@@ -39,3 +39,4 @@ aerich migrate
 
 
 ## Screenshot of the work:
+![image](https://user-images.githubusercontent.com/84931791/188851322-3505da36-22fc-4371-86e6-10745f8bbe64.png)
