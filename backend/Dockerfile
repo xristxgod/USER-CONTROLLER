@@ -11,7 +11,4 @@ RUN pip install -r requirements.txt
 
 RUN apt-get update && apt-get install netcat -y
 
-RUN aerich init -t src.settings.DATABASE_CONFIG
-RUN aerich init-db
-
 COPY . /home/app
