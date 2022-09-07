@@ -13,11 +13,6 @@ services:
       - 5432
     networks:
       - prod_network
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U root -d user_database" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
     restart: always
     volumes:
       - ./config/db:/var/lib/postgresql/data
@@ -56,8 +51,8 @@ services:
     networks:
       - prod_network
     depends_on:
-      - cache
       - database
+      - cache
     logging:
       options:
         max-size: 10m
