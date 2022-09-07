@@ -10,3 +10,8 @@ DATABASE_CONFIG = {
         }
     },
 }
+
+
+__all__ = [
+    "DATABASE_CONFIG"
+]
