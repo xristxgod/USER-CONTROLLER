@@ -10,6 +10,4 @@ logging.basicConfig(
 
 
 class Config:
-    MONGODB_URL = os.getenv("MONGODB_URL")
-    MONGODB_NAME = os.getenv("MONGODB_NAME")
-    MONGODB_COLLECTION = os.getenv("MONGODB_COLLECTION")
+    DATABASE_URI = os.getenv("DATABASE_URI", "sqlite://db.sqlite3")

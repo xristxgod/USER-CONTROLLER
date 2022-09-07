@@ -16,7 +16,7 @@ class BodyUser(BaseModel):
     def valid_fio(cls, value: Optional[str] = None):
         if value is None:
             return None
-        if bool(re.fullmatch(r'(?i)[а-яё ]+', value)):
+        if not bool(re.fullmatch(r'(?i)[а-яё ]+', value)):
             raise ValueError("Only Cyrillic is allowed for the string!")
         return value
 
@@ -24,8 +24,9 @@ class BodyUser(BaseModel):
     def valid_phone_number(cls, number: str):
         if not number.isdigit():
             raise ValueError("The number must consist of integers. Example: 79281304521")
-        if number[0] == "7":
+        if number[0] != "7":
             raise ValueError("The number must start with 7. Example: 79281304521")
+        return number
 
     class Config:
         schema_extra = {
@@ -47,8 +48,9 @@ class BodyNumber(BaseModel):
     def valid_phone_number(cls, number: str):
         if not number.isdigit():
             raise ValueError("The number must consist of integers. Example: 79281304521")
-        if number[0] == "7":
+        if number[0] != "7":
             raise ValueError("The number must start with 7. Example: 79281304521")
+        return number
 
     class Config:
         schema_extra = {

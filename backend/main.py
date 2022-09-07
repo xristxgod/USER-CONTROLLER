@@ -17,4 +17,5 @@ async def startup():
 
 
 if __name__ == '__main__':
-    pass
+    import uvicorn
+    uvicorn.run("main:app")
