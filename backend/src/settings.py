@@ -1,7 +1,7 @@
 from config import Config
 
 
-TORTOISE_ORM = {
+DATABASE_CONFIG = {
     "connections": {"default": Config.DATABASE_URI},
     "apps": {
         "models": {

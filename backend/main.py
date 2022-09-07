@@ -17,7 +17,7 @@ register_tortoise(
     app,
     db_url=Config.DATABASE_URI,
     modules={"models": Config.APPS_MODELS},
-    generate_schemas=False,
+    generate_schemas=True,
     add_exception_handlers=True,
 )
 

@@ -10,7 +10,8 @@ logging.basicConfig(
 
 
 class Config:
-    DATABASE_URI = os.getenv("DATABASE_URI", "sqlite://db.sqlite3")
+    DATABASE_URI = os.getenv("DATABASE_URI", "postgres://postgres:postgrespw@localhost:49153")
     APPS_MODELS = [
-        "src.models"
+        "src.models",
+        "aerich.models"
     ]
