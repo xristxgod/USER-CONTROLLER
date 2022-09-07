@@ -1,6 +1,24 @@
 # User API
 
+
+--------
+
+
+**Frameworks:** \
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) 
+
+**Main database:** \
+![Postgres](https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+
+**Cache database:** \
+![MongoDB](https://img.shields.io/badge/MongoDB-%234ea94b.svg?style=for-the-badge&logo=mongodb&logoColor=white)
+
+
+--------
+
+
 > Api for working with users!
+
 
 ## Quick Start
 
@@ -17,5 +35,6 @@ aerich init -t src.settings.DATABASE_CONFIG
 # Migrate
 aerich init-db
 ```
+
 
 ## Screenshot of the work:
