@@ -1,8 +1,12 @@
 import uuid
+from typing import Dict, Optional
 from datetime import datetime
 
+import pymongo
 from tortoise import fields
 from tortoise.models import Model
+
+from config import Config
 
 
 class UserModel(Model):
@@ -23,6 +27,30 @@ class UserModel(Model):
         return f"{self.surname} {self.name}"
 
 
+class StorageDB:
+    def __new__(cls):
+        if not hasattr(cls, "instance"):
+            cls.instance = super(StorageDB, cls).__new__(cls)
+        return cls.instance
+
+    def __init__(self):
+        self.__client = pymongo.MongoClient(Config.CACHE_DATABASE_URI)
+        self.__db = self.__client.get_database(Config.CACHE_DATABASE_NAME)
+        self.__collection = self.__db.get_collection(Config.CACHE_DATABASE_COLLECTION)
+
+    @property
+    def collection(self):
+        return self.__collection
+
+    def __setitem__(self, key: str, data: Dict):
+        self.collection.insert_one({"country": key, "data": data})
+
+    def __getitem__(self, key: str) -> Optional[Dict]:
+        return self.collection.find({}, {"country": key})[0]
+
+
 __all__ = [
-    "UserModel"
+    "UserModel", "StorageDB"
 ]
+
+

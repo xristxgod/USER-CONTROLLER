@@ -4,7 +4,7 @@ from datetime import datetime
 import aiohttp
 from tortoise.exceptions import IncompleteInstanceError
 
-from .models import UserModel
+from .models import UserModel, StorageDB
 from .schemas import BodyUser, ResponseUser, ResponseSuccessfully
 from config import Config, logger
 
@@ -18,7 +18,7 @@ class ExternalDaData:
         return cls.instance
 
     def __init__(self):
-        self.cache: Dict = {}
+        self.cache = StorageDB()
 
     async def get_code(self, country: str) -> int:
         if country not in self.cache:
