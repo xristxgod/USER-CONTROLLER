@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from tortoise import Tortoise
+from tortoise.contrib.fastapi import register_tortoise
 
 from src import main_router
 from config import Config
@@ -13,15 +13,13 @@ app = FastAPI(
 app.include_router(main_router)
 
 
-@app.on_event("startup")
-async def startup():
-    await Tortoise.init(db_url=Config.DATABASE_URI, modules={'models': ['src.models']})
-    await Tortoise.generate_schemas()
-
-
-@app.on_event("shutdown")
-async def shutdown():
-    await Tortoise.close_connections()
+register_tortoise(
+    app,
+    db_url=Config.DATABASE_URI,
+    modules={"models": Config.APPS_MODELS},
+    generate_schemas=False,
+    add_exception_handlers=True,
+)
 
 
 if __name__ == '__main__':

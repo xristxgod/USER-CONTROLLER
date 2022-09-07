@@ -11,3 +11,6 @@ logging.basicConfig(
 
 class Config:
     DATABASE_URI = os.getenv("DATABASE_URI", "sqlite://db.sqlite3")
+    APPS_MODELS = [
+        "src.models"
+    ]
