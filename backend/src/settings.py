@@ -1,11 +1,17 @@
 from config import Config
 
 
+APPS_MODELS = [
+    "src.models",
+    "aerich.models"
+]
+
+
 DATABASE_CONFIG = {
     "connections": {"default": Config.DATABASE_URI},
     "apps": {
         "models": {
-            "models": Config.APPS_MODELS,
+            "models": APPS_MODELS,
             "default_connection": "default",
         }
     },

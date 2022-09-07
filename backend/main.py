@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from tortoise.contrib.fastapi import register_tortoise
 
-from src import main_router
+from src import main_router, settings
 from config import Config
 
 
@@ -16,7 +16,7 @@ app.include_router(main_router)
 register_tortoise(
     app,
     db_url=Config.DATABASE_URI,
-    modules={"models": Config.APPS_MODELS},
+    modules={"models": settings.APPS_MODELS},
     generate_schemas=False,
     add_exception_handlers=True,
 )
