@@ -18,19 +18,17 @@ class ExternalDaData:
         return cls.instance
 
     def __init__(self):
-        self.session = aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA})
-        self.cache = {}
+        self.cache: Dict = {}
 
-    async def get(self, country: str) -> int:
+    async def get_code(self, country: str) -> int:
         if country not in self.cache:
             async with aiohttp.ClientSession(headers={"Authorization": Config.TOKEN_DADATA}) as session:
                 async with session.post(self.URL, json={"query": country}) as response:
                     data: Dict = await response.json()
             if len(data["suggestions"]) == 0:
                 return 0
-            code = int(data["suggestions"][0]["data"]["code"])
-            self.cache[country] = code
-        return self.cache[country]
+            self.cache[country] = data["suggestions"][0]
+        return self.cache[country]["data"]["code"]
 
 
 class ServiceUserCRUD:

@@ -32,7 +32,7 @@ async def get_user(body: BodyNumber):
         phone_number=result.phone_number,
         email=result.email,
         country=result.country,
-        country_code=await external.get(result.country)
+        country_code=await external.get_code(result.country)
     )
 
 
